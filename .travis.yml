@@ -1,0 +1,30 @@
+env:
+  global:
+  - CC_TEST_REPORTER_ID=118f05d9d9e5c1df42b52d2d973db299c8c1de12e7c2dcd24d5f992e22cfaafa
+language: java
+services:
+- postgresql
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+before_script:
+- ./ci-install-dependencies.sh
+- ./cc-test-reporter before-build
+before_install:
+- sudo cp /etc/postgresql/{9.6,10}/main/pg_hba.conf
+- sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/10/main/postgresql.conf
+- sudo service postgresql restart 10
+jdk:
+- openjdk11
+script:
+- mvn -Pintegration clean test scoverage:report
+after_success:
+- mvn clean cobertura:cobertura coveralls:report
+- ./cc-test-reporter format-coverage -t cobertura target/cobertura.xml
+- ./cc-test-reporter upload-coverage
+cache:
+  directories:
+  - $HOME/.m2
