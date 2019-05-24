@@ -10,13 +10,12 @@ addons:
     packages:
       - postgresql-10
       - postgresql-client-10
-before_script:
-  - ./ci-install-dependencies.sh
-  - ./cc-test-reporter before-build
 before_install:
   - sudo cp /etc/postgresql/{9.6,10}/main/pg_hba.conf
   - sudo sed -i 's/port = 5433/port = 5432/' /etc/postgresql/10/main/postgresql.conf
   - sudo service postgresql restart 10
+  - ./ci-install-dependencies.sh
+  - ./cc-test-reporter before-build
 jdk:
   - openjdk11
 script:
