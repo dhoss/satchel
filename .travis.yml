@@ -3,13 +3,13 @@ env:
   - CC_TEST_REPORTER_ID=118f05d9d9e5c1df42b52d2d973db299c8c1de12e7c2dcd24d5f992e22cfaafa
 language: java
 services:
-- postgresql
+  - postgresql
 addons:
   postgresql: "10"
   apt:
     packages:
-    - postgresql-10
-    - postgresql-client-10
+      - postgresql-10
+      - postgresql-client-10
 before_script:
   - ./ci-install-dependencies.sh
   - ./cc-test-reporter before-build
@@ -20,7 +20,7 @@ before_install:
 jdk:
   - openjdk11
 script:
-  - mvn -Pintegration clean test scoverage:report
+  - mvn -Pintegration clean cobertura:cobertura
 after_success:
   - mvn clean cobertura:cobertura coveralls:report
   - ./cc-test-reporter format-coverage -t cobertura target/cobertura.xml
