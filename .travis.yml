@@ -1,6 +1,6 @@
 env:
   global:
-  - CC_TEST_REPORTER_ID=118f05d9d9e5c1df42b52d2d973db299c8c1de12e7c2dcd24d5f992e22cfaafa
+  #- CC_TEST_REPORTER_ID=118f05d9d9e5c1df42b52d2d973db299c8c1de12e7c2dcd24d5f992e22cfaafa
 language: java
 services:
   - postgresql
@@ -19,11 +19,11 @@ before_install:
 jdk:
   - openjdk11
 script:
-  - mvn -Pintegration clean cobertura:cobertura
+  - mvn -Dintegration clean test jacoco:report coveralls:report
 after_success:
-  - mvn clean cobertura:cobertura coveralls:report
-  - ./cc-test-reporter format-coverage -t cobertura target/cobertura.xml
-  - ./cc-test-reporter upload-coverage
+  - mvn clean test jacoco:report coveralls:report
+  #- ./cc-test-reporter format-coverage -t cobertura target/cobertura.xml
+  #- ./cc-test-reporter upload-coverage
 cache:
   directories:
     - $HOME/.m2
