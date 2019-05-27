@@ -21,7 +21,7 @@ jdk:
 script:
   - mvn -Dintegration clean test jacoco:report coveralls:report
 after_success:
-  - mvn clean test jacoco:report coveralls:report
+  - mvn test jacoco:report coveralls:report
   #- ./cc-test-reporter format-coverage -t cobertura target/cobertura.xml
   #- ./cc-test-reporter upload-coverage
 cache:
